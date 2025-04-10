@@ -8,7 +8,7 @@ A fully serverless web application that allows users to submit their name and em
 
 ## 📸 Demo
 
-![Architecture Diagram](./diagram.png)
+<img src="https://github.com/user-attachments/assets/75c86f22-3f12-4056-84b1-0c05e785fd1b" alt="diagram">
 
 ---
 
