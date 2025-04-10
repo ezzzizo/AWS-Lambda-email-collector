@@ -1,6 +1,6 @@
 # AWS-Lambda-email-collector
 
-# ☁️ Serverless Email Collection App (AWS Lambda + API Gateway + DynamoDB)
+# ☁️ Serverless Email Collection App (AWS Lambda + API Gateway + DynamoDB + EC2 + KMS + IAM)
 
 A fully serverless web application that allows users to submit their name and email via a form hosted on an EC2 instance running Apache. Submissions are processed using AWS Lambda and stored securely in DynamoDB, with input validation and duplicate prevention.
 
