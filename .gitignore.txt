@@ -1,0 +1,21 @@
+/aws*
+
+/.env*
+
+/package*
+
+/package-lock*
+
+/test*
+
+/old version/*
+
+/node_modules/
+
+/terraform/terraform*
+
+/terraform/.terraform/
+
+/terraform/.terraform*
+
+/dep/

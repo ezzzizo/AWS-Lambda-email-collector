@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Subscription</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome for the mail icon -->
+    <style>
+        /* Full-page gradient background */
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2, #ff7eb3, #ff3e7f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Large mail icon in the background */
+        .mail-icon {
+            position: absolute;
+            font-size: 200px;
+            color: rgba(255, 255, 255, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-20px);
+            }
+        }
+
+        /* Centered form container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 70px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            z-index: 1;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Input field */
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: background 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        /* Submit button */
+        button {
+            background: #f11a74;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff3e7f;
+            transform: translateY(-2px);
+        }
+
+        /* Success/Error message */
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Large title above the box */
+        .powered-by {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Name in the bottom left corner */
+        .name {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Mail Icon -->
+    <i class="fas fa-envelope mail-icon"></i>
+
+    <!-- Large title above the box -->
+    <div class="powered-by">Powered by AWS</div>
+
+    <!-- Centered form container -->
+    <div class="container">
+        <h2>Subscribe with your Email</h2>
+        <form id="emailForm">
+            <!-- New Name Input Field -->
+            <input type="text" id="nameInput" placeholder="Enter your name" required>
+            <input type="email" id="emailInput" placeholder="Enter your email" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <!-- Name in the bottom left corner -->
+    <div class="name">Ezz Eldin Adel</div>
+
+    <script>
+        document.getElementById("emailForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("nameInput").value.trim();
+    const email = document.getElementById("emailInput").value.trim();
+    const messageElement = document.getElementById("message");
+
+    // ✅ Client-side validation for empty fields
+    if (!name || !email) {
+        messageElement.textContent = "⚠️ Name and email are required!";
+        messageElement.style.color = "yellow";
+        return;
+    }
+
+    // ✅ Validate email format
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+        messageElement.textContent = "⚠️ Please enter a valid email address!";
+        messageElement.style.color = "yellow";
+        return;
+    }
+
+    try {
+        const response = await fetch("https://f5cosxsdoj.execute-api.us-east-1.amazonaws.com/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email })
+        });
+
+        const result = await response.json();
+        messageElement.textContent = result.message;
+        messageElement.style.color = "white";
+    } catch (error) {
+        messageElement.textContent = "❌ Failed to send request. Please try again.";
+        messageElement.style.color = "red";
+    }
+    });
+    </script>
+</body>
+</html>
